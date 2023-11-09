@@ -1,0 +1,1 @@
+# Routes for managing images go here
