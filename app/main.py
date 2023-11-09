@@ -11,26 +11,6 @@ import asyncio
 
 app = FastAPI()
 
-# Ruta de ejemplo
-@app.get("/")
-async def read_root():
-    return {"message": "¡Bienvenido a tu API con FastAPI!"}
-
-app.include_router(auth.router, prefix="/auth", tags=["tags"])
-
-# Ruta para obtener todos los documentos desde la base de datos MongoDB
-@app.get("/documents/")
-async def get_documents():
-    documents = await documents_collection.find({}).to_list(None)
-    documents = [str(doc["_id"]) for doc in documents]
-    return documents
-
-# Ruta para agregar un nuevo documento a la base de datos
-@app.post("/documentspost/")
-async def create_document(document_data: dict):
-    result = await documents_collection.insert_one(document_data)
-    return {"message": "Documento creado con éxito", "inserted_id": str(result.inserted_id)}
-
 @app.post("/login")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     user = authenticate_user(form_data.username, form_data.password)
